@@ -1,0 +1,10 @@
+{
+	"common": {
+		"becomeInvestor": "Become an Investor",
+		"loading": "Loading...",
+		"investingType": "Investing Type",
+		"approve": "Approve",
+		"decline": "Decline",
+		"spam": "Spam"
+	}
+}

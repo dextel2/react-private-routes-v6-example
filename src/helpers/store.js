@@ -15,6 +15,7 @@ const composeEnhancers =
 const { createReduxHistory, routerMiddleware } = createReduxHistoryContext({
   history: createBrowserHistory(),
   oldLocationChangePayload: true,
+  showHistoryAction: true,
 });
 const sagaMiddleware = createSagaMiddleware();
 const middleware = [sagaMiddleware, routerMiddleware];

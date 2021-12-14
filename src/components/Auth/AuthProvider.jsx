@@ -1,16 +1,14 @@
-import React, { createContext } from "react";
+import React from "react";
 import { fakeAuthProvider } from "../../auth/auth";
 
-const AuthContext = createContext();
+const AuthContext = React.createContext();
 
 export function AuthProvider({ children }) {
-  const [user, setUser] = React.useState(
-    localStorage.getItem("isAuthenticated"),
-  );
+  const [user, setUser] = React.useState(localStorage.getItem("token"));
 
   const signin = (newUser, callback) => {
     return fakeAuthProvider.signin(() => {
-      localStorage.setItem("isAuthenticated", newUser);
+      localStorage.setItem("token", newUser);
       setUser(newUser);
       callback();
     });
@@ -18,7 +16,10 @@ export function AuthProvider({ children }) {
 
   const signout = (callback) => {
     return fakeAuthProvider.signout(() => {
-      localStorage.removeItem("isAuthenticated");
+      localStorage.removeItem("token");
+      localStorage.removeItem("expirationDate");
+      localStorage.removeItem("slug");
+      localStorage.removeItem("email");
       setUser(null);
       callback();
     });

@@ -11,12 +11,7 @@ import {
   setAlert,
 } from "../../actions/auth/auth";
 import { LOGIN_API } from "../../apiCollecitions";
-import { history } from "../../../helpers/store";
-import { push } from "connected-react-router";
-
-function forwardTo(location) {
-  history.push(location);
-}
+import { push } from "redux-first-history";
 
 export function* logoutSaga(action) {
   yield put(authStart());
@@ -54,8 +49,7 @@ export function* authLoginSaga(action) {
     yield localStorage.setItem("email", action.email);
     yield localStorage.setItem("slug", response.data.data.user.slug);
     yield put(authSuccess(response.data.token));
-    yield call(forwardTo, "/protected");
-    yield put(push(`/technology/`));
+    yield put(push("/protected"));
 
     yield put(checkAuthTimeout(expirationTokenTime));
     yield delay(500);
@@ -80,6 +74,7 @@ export function* authCheckStateSaga(action) {
       yield call(logoutSaga);
     } else {
       yield put(authSuccess(token));
+      yield put(push("/protected"));
       yield put(
         checkAuthTimeout(
           (expirationDate.getTime() - new Date().getTime()) / 1000,

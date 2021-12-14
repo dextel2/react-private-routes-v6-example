@@ -1,14 +1,13 @@
 import { Field, Form, Formik } from "formik";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { useLocation } from "react-router-dom";
-import * as actions from "../../store/actions/";
+import * as actions from "../../store/actions/auth/auth";
 
 export function LoginPage() {
   const location = useLocation();
   const from = location.state?.from?.pathname || "/";
   const dispatch = useDispatch();
-  const { token } = useSelector((state) => state.auth);
-  console.log(token);
+
   const initialValues = {
     email: "",
     password: "",

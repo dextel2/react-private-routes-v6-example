@@ -1,4 +1,5 @@
 /* eslint-disable no-unused-vars */
+import { push } from "redux-first-history";
 import { call, delay, put } from "redux-saga/effects";
 import axios from "../../../config/axios";
 import {
@@ -11,7 +12,12 @@ import {
   setAlert,
 } from "../../actions/auth/auth";
 import { LOGIN_API } from "../../apiCollecitions";
-import { push } from "redux-first-history";
+
+export function* changeLocation({ payload }) {
+  const { location, action } = payload;
+  yield put(push(location));
+  yield console.log("LOCATION_CHANGE", location, action);
+}
 
 export function* logoutSaga(action) {
   yield put(authStart());
@@ -49,8 +55,6 @@ export function* authLoginSaga(action) {
     yield localStorage.setItem("email", action.email);
     yield localStorage.setItem("slug", response.data.data.user.slug);
     yield put(authSuccess(response.data.token));
-    yield put(push("/protected"));
-
     yield put(checkAuthTimeout(expirationTokenTime));
     yield delay(500);
     yield put(setAlert(true));
@@ -74,7 +78,6 @@ export function* authCheckStateSaga(action) {
       yield call(logoutSaga);
     } else {
       yield put(authSuccess(token));
-      yield put(push("/protected"));
       yield put(
         checkAuthTimeout(
           (expirationDate.getTime() - new Date().getTime()) / 1000,
